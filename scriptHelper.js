@@ -17,37 +17,77 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
 }
 
 function validateInput(testInput) {
-    window.addEventListener("load",function(){
-        let form =document.querySelector("form");
-        form.addEventListener("submit",function(event){
-            let input=document.querySelector("input[name=testInput]");
-            if(input.value==="")
+    let form=document.getElementById("testForm");
+    form.addEventListener("submit", function(event){
+        event.preventDefault()
+        if(testInput.trim()===""){
             return "Empty";
-            
-            if(isNaN(input.value))
-            return "Not a Number";
-
-            return"Is a Number";
-        })
+        }
+        if(!isNaN(testInput.value)){
+            return "Is a Number"
+        }
+        return "Not a Number"
     })
+    
 };
 
 function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
-    window.addEventListener("load",function(){
-        let document=document.querySelector("document");
-        document.addEventListener("submit",function(event){
-            let pilot= document.querySelector("input[name=pilotName]");
-            let copilot=document.querySelector("input[name=copilotName]");
-            let fuelLevel =document.querySelector("input[name=fuelLevel]");
-            let cargoLevel=document.querySelector("input[name=cargoMass]");
-            let list = [pilot, copilot, fuelLevel,cargoLevel];
+    let form=document.getElementById("testForm");
+    form.addEventListener("submit",function(event){
+        event.preventDefault();
+        let list =[]
+        let pilot= document.getElementByTagName("pilotName").value;
+        let copilot=document.getElementByTagName("copilotName").value;
+        let fuelLevel=document.getElementByTagName("fuelLevel").value;
+        let cargoLevel=document.getElementByTagName("cargoMass").value;
 
-            for(let i =0;i<list.length;i++){
-                validateInput(list[i]);
+        list.push(pilot,copilot,fuelLevel,cargoLevel);
+
+        for(let i=0;i<list.length;i++){
+            let hold=[]
+            if(validateInput(list[i]==="Empty")){
+                alert("All Fields are Required!");
             }
-
-
-        })
+            if(validateInput(list[i]==="Not a Number")){
+                document.getElementById("faultyItems").style.visibility="visible";
+                document.getElementById("faultyItems").innerHTML.pilotStatus=`Pilot Ready : ${pilot}`;
+                document.getElementById("faultyItems").innerHTML.copilotStatus=`Co-pilot Ready:${copilot}`;
+            }
+            if(validateInput(list[i]==="Is a Number")){
+                list[i].push(hold);
+            }
+            else if(hold[0]>10000&&hold[1]<10000){
+                document.getElementById("faultyItems").style.visibility="visible";
+                document.getElementById("faultyItems").innerHTML.fuelStatus="Not enought fuel for the journey";
+                document.getElementById("faultyItems").innerHTML.cargoStatus="Too much mass for the shuttle";
+                document.getElementById("h2").innerHTML="Shuttle not ready for launch"
+                document.getElementById("h2").style.color-"red"
+            }
+            else if (hold[0]>10000&&hold[1]>10000){
+            document.getElementById("faultyItems").style.visibility="visible";
+            document.getElementById("faultyItems").innerHTML.fuelStatus="Not enought fuel for the journey";
+            document.getElementById("faultyItems").innerHTML.cargoStatus="Cargo mass low enough for launch";
+            document.getElementById("h2").innerHTML="Shuttle not ready for launch"
+            document.getElementById("h2").style.color-"red"
+            }
+            else if (hold[0]<10000&&hold[1]<10000){
+            document.getElementById("faultyItems").style.visibility="visible";
+            document.getElementById("faultyItems").innerHTML.fuelStatus="Fuel level high enough for launch";
+            document.getElementById("faultyItems").innerHTML.cargoStatus="Too much mass for the shuttle";
+            document.getElementById("h2").innerHTML="Shuttle not ready for launch"
+            document.getElementById("h2").style.color-"red"
+            }
+            else if (hold[0]<=10000&&hold[1]>=10000){
+                document.getElementById("faultyItems").style.visibility="visible";
+                document.getElementById("faultyItems").innerHTML.fuelStatus="Fuel level high enough for launch";
+                document.getElementById("faultyItems").innerHTML.cargoStatus="Cargo mass low enough for launch";
+                document.getElementById("h2").innerHTML="Shuttle  ready for launch"
+                document.getElementById("h2").style.color-"green"
+            }
+            else{
+                alert("All Fields Required")
+            }
+        }
     })
 }
 
