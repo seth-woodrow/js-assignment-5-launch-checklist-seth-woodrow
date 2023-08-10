@@ -79,7 +79,6 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
             document.getElementById("h2").style.color = "green";
         }
     });
-    return
 }    
 
 
@@ -93,7 +92,8 @@ async function myFetch() {
 }
 
 function pickPlanet(planets) {
-    
+    const randomPlanet=Math.floor(Math.random*planets.length);
+    return planets[randomPlanet];
 }
 
 module.exports.addDestinationInfo = addDestinationInfo;
